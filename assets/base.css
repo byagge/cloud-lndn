@@ -28,3 +28,23 @@ a {
 button {
   font-family: inherit;
 }
+
+::selection {
+  background: #2f81ff;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0b0e;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2d36;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3e4a;
+}
