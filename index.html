@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORBIT — облачные серверы с управлением из Telegram</title>
+<meta name="description" content="ORBIT — облачная платформа pay-as-you-go: серверы, SSH и AI-агенты для деплоя и масштабирования. Запуск и оплата прямо в Telegram." />
+<meta name="theme-color" content="#f5f5f7" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><circle cx=%2212%22 cy=%2212%22 r=%2211%22 fill=%22%231d1d1f%22/></svg>" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ["-apple-system","BlinkMacSystemFont","SF Pro Display","SF Pro Text","Segoe UI","Helvetica","Arial","sans-serif"]
+        },
+        colors: { ink: "#1d1d1f", muted: "#6e6e73", surface: "#f5f5f7", accent: "#0a84ff" }
+      }
+    }
+  };
+</script>
+<link rel="stylesheet" href="assets/base.css" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body class="bg-surface text-ink antialiased selection:bg-black selection:text-white font-sans">
+<div class="site-bg">
+
+  <!-- HEADER -->
+  <header id="siteHeader" class="site-header px-4 sm:px-6 md:px-10">
+    <div class="mx-auto flex w-full max-w-[1200px] items-center justify-between py-4 sm:py-5">
+      <a href="#top" class="flex items-center gap-2.5 sm:gap-3">
+        <span class="logo-dot h-9 w-9 rounded-full sm:h-10 sm:w-10"></span>
+        <span class="brand-mark text-[22px] font-semibold sm:text-[26px]">ORBIT</span>
+      </a>
+
+      <nav class="hidden items-center gap-8 text-[15px] font-medium text-ink/80 md:flex" aria-label="Основная навигация">
+        <a href="#how" class="transition-opacity hover:opacity-55">Как это работает</a>
+        <a href="#pricing" class="transition-opacity hover:opacity-55">Тарифы</a>
+        <a href="#agents" class="transition-opacity hover:opacity-55">AI-агенты</a>
+        <a href="#trust" class="transition-opacity hover:opacity-55">Надёжность</a>
+        <a href="#faq" class="transition-opacity hover:opacity-55">Вопросы</a>
+      </nav>
+
+      <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center justify-center rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:bg-black sm:px-5 sm:py-2.5">
+        Открыть в Telegram
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero px-4 sm:px-6 md:px-10">
+      <div class="mx-auto grid max-w-[1200px] items-center gap-12 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-16">
+        <div class="text-center lg:text-left">
+          <div class="hero-kicker justify-center lg:justify-start">ORBIT CLOUD · PAY AS YOU GO</div>
+          <h1 class="hero-title">
+            Облако,<br />
+            которым управляют <span class="accent-text">в Telegram</span>
+          </h1>
+          <p class="hero-sub mx-auto lg:mx-0">
+            Сервер поднимается за 30 секунд, AI-агент настраивает окружение,
+            а счёт растёт только вместе с реальной нагрузкой. Без личного кабинета,
+            без звонков в поддержку — всё из одного чата.
+          </p>
+
+          <div class="hero-actions justify-center lg:justify-start">
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.75 3.8 18.4 20.12c-.25 1.15-.93 1.43-1.88.89l-5.22-3.84-2.52 2.42c-.28.28-.51.51-1.05.51l.38-5.31 9.67-8.73c.42-.38-.09-.59-.65-.21L5.2 13.37.05 11.76c-1.12-.35-1.14-1.12.23-1.65L20.43 2.35c.93-.35 1.75.21 1.32 1.45Z"/></svg>
+              Запустить сервер
+            </a>
+            <a href="#pricing" class="btn-secondary">Смотреть тарифы</a>
+          </div>
+
+          <div class="hero-meta justify-center text-sm text-muted lg:justify-start">
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-[#1fae5c]"></span>Биллинг по секундам</div>
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-[#1fae5c]"></span>SLA до 99.95%</div>
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-[#1fae5c]"></span>Поддержка 24/7</div>
+          </div>
+        </div>
+
+        <div class="flex justify-center lg:justify-end" aria-hidden="true">
+          <div class="console-card w-full max-w-[420px]">
+            <div class="console-bar">
+              <span class="console-dot bg-[#ff5f57]"></span>
+              <span class="console-dot bg-[#febc2e]"></span>
+              <span class="console-dot bg-[#28c840]"></span>
+              <span class="ml-2 text-[11px] text-white/40">@orbit_cloud_bot</span>
+            </div>
+            <div class="console-body">
+              <div><span class="console-muted">вы</span> /deploy app-prod ru-1 2vCPU/4GB</div>
+              <div class="mt-1"><span class="console-prompt">orbit ›</span> выбираю узел ru-1… <span class="console-ok">готово</span></div>
+              <div><span class="console-prompt">orbit ›</span> AI-агент настраивает окружение…</div>
+              <div><span class="console-prompt">orbit ›</span> ставлю SSL, открываю 80/443</div>
+              <div class="mt-1"><span class="console-ok">✓ app-prod запущен за 27 сек</span></div>
+              <div class="console-muted">CPU 6% · RAM 310/4096 MB</div>
+              <div class="mt-1 console-muted">списано сегодня: 3.84 ₽</div>
+              <div class="mt-2"><span class="console-prompt">orbit ›</span> ожидаю команду<span class="console-cursor"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIC / HOW USAGE-BASED BILLING WORKS -->
+    <section id="how" class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px]">
+        <div class="fade-in max-w-2xl">
+          <div class="eyebrow">Как это устроено</div>
+          <h2 class="section-title">Платите за то, что реально потребляете</h2>
+          <p class="section-sub">
+            Никаких фиксированных «коробок» с переплатой за простой. Баланс пополняется
+            один раз, а дальше ORBIT списывает средства поминутно — по факту использования CPU,
+            памяти, диска и трафика конкретного сервера.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <div class="card fade-in">
+            <div class="step-num">1</div>
+            <h3 class="mt-5 text-lg font-semibold">Выбираете конфигурацию</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              В боте указываете регион, образ (Ubuntu, Debian, Docker, n8n, 1С-совместимые
+              сборки и др.) и желаемую мощность — или доверяете подбор AI-агенту под вашу задачу.
+            </p>
+          </div>
+          <div class="card fade-in">
+            <div class="step-num">2</div>
+            <h3 class="mt-5 text-lg font-semibold">Сервер запускается сам</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Агент поднимает инстанс, накатывает окружение, выпускает SSL и открывает нужные
+              порты. Весь процесс занимает в среднем 20–40 секунд.
+            </p>
+          </div>
+          <div class="card fade-in">
+            <div class="step-num">3</div>
+            <h3 class="mt-5 text-lg font-semibold">Счётчик идёт по факту</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Выросла нагрузка — агент предлагает расширить ресурсы, упала — автоматически
+              экономит. Списания видны в боте в реальном времени, без сюрпризов в конце месяца.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-10 card fade-in bg-white/60">
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <div class="text-sm font-semibold text-ink">vCPU</div>
+              <div class="mt-1 text-sm text-muted">от 0,80 ₽ за час активного ядра</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-ink">Память</div>
+              <div class="mt-1 text-sm text-muted">от 0,20 ₽ за ГБ·час</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-ink">Диск NVMe</div>
+              <div class="mt-1 text-sm text-muted">от 0,004 ₽ за ГБ·час</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-ink">Исходящий трафик</div>
+              <div class="mt-1 text-sm text-muted">от 4 ₽ за ГБ, первые 50 ГБ бесплатно</div>
+            </div>
+          </div>
+          <p class="mt-5 text-xs text-muted">
+            Тариф определяет уровень поддержки, SLA и набор возможностей (включая доступ по SSH).
+            Ставки за ресурсы приведены для тарифа «Старт» и снижаются на старших тарифах за счёт
+            включённых квот и скидок за объём.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px]">
+        <div class="fade-in text-center">
+          <div class="eyebrow">Тарифы</div>
+          <h2 class="section-title">Четыре уровня — от первого бота до инфраструктуры компании</h2>
+          <p class="section-sub mx-auto">
+            Везде — оплата по факту использования. Разница в доступе к SSH, уровню поддержки,
+            автоматизации и гарантиях.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-4">
+
+          <!-- START -->
+          <div class="price-card fade-in">
+            <div class="text-sm font-semibold text-muted">Старт</div>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="price-value">149 ₽</span><span class="price-unit">/мес база + usage</span>
+            </div>
+            <p class="mt-3 text-sm text-muted">Для ботов, лендингов, тестовых проектов и первого знакомства с облаком.</p>
+            <div class="mt-6 flex flex-col gap-3">
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Деплой и управление через Telegram-бота и веб-панель</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>AI-агент настраивает окружение и SSL автоматически</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Готовые шаблоны: Node, Python, Docker, n8n, боты</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>SLA 99.5%</div>
+              <div class="lock-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4 12 12M12 4 4 12" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round"/></svg>Прямой SSH-доступ недоступен</div>
+              <div class="lock-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4 12 12M12 4 4 12" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round"/></svg>Автобэкапы не включены</div>
+            </div>
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-8 w-full">Начать на Старте</a>
+          </div>
+
+          <!-- GROW -->
+          <div class="price-card fade-in is-featured">
+            <div class="price-badge">Популярный</div>
+            <div class="text-sm font-semibold text-white/60">Рост</div>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="price-value">490 ₽</span><span class="price-unit text-white/60">/мес база + usage</span>
+            </div>
+            <p class="mt-3 text-sm text-white/70">С обслуживанием: сервер под ключ и SSH, когда команда выросла из «коробки».</p>
+            <div class="mt-6 flex flex-col gap-3 text-white/90">
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Полный root SSH-доступ к серверу</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ежедневные снапшоты и автобэкап 7 дней</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Managed-обновления ОС и security-патчи</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>AI security-агент: сканирует и закрывает уязвимости</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Мониторинг и алерты в Telegram</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>SLA 99.9%, приоритетная поддержка</div>
+            </div>
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-primary mt-8 w-full bg-white text-ink hover:bg-white/90">Перейти на Рост</a>
+          </div>
+
+          <!-- SCALE -->
+          <div class="price-card fade-in">
+            <div class="text-sm font-semibold text-muted">Масштаб</div>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="price-value">1 490 ₽</span><span class="price-unit">/мес база + usage</span>
+            </div>
+            <p class="mt-3 text-sm text-muted">Для продуктов с реальной нагрузкой: автоскейлинг, резерв, выделенный агент.</p>
+            <div class="mt-6 flex flex-col gap-3">
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Всё из тарифа «Рост», включая SSH</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Автоскейлинг групп серверов под нагрузку</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Балансировщик нагрузки и мульти-регион</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Выделенный AI DevOps-агент под проект</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Защита от DDoS на уровне сети</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#1fae5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>SLA 99.95%, персональный канал поддержки</div>
+            </div>
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-8 w-full">Перейти на Масштаб</a>
+          </div>
+
+          <!-- ENTERPRISE -->
+          <div class="price-card fade-in is-enterprise">
+            <div class="text-sm font-semibold text-white/60">Корпоративный</div>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="price-value">По запросу</span>
+            </div>
+            <p class="mt-3 text-sm text-white/70">Индивидуальная инфраструктура, контракт и выделенная команда под задачи бизнеса.</p>
+            <div class="mt-6 flex flex-col gap-3 text-white/90">
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Выделенные или гибридные мощности</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Персональный аккаунт-менеджер и инженер</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>AI-агент, обученный на регламентах вашей компании</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Индивидуальный SLA и договор, оплата по счёту</div>
+              <div class="check-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6 11.5 13 4.5" stroke="#5fc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Интеграция с вашими системами и compliance-требованиями</div>
+            </div>
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-secondary mt-8 w-full bg-white/10 text-white hover:bg-white/15">Обсудить проект</a>
+          </div>
+
+        </div>
+
+        <p class="fade-in mt-8 text-center text-xs text-muted">
+          Указаны стартовые ставки без НДС. Итоговая сумма зависит от выбранной конфигурации
+          и фактического потребления ресурсов — расчёт показывается в боте перед запуском.
+        </p>
+      </div>
+    </section>
+
+    <!-- AI AGENTS -->
+    <section id="agents" class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px]">
+        <div class="fade-in max-w-2xl">
+          <div class="eyebrow">AI-агенты</div>
+          <h2 class="section-title">Команда DevOps, которая никогда не спит</h2>
+          <p class="section-sub">
+            Вместо набора разрозненных панелей — агенты, которые постоянно следят за вашей
+            инфраструктурой и действуют раньше, чем вы заметите проблему.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div class="card fade-in">
+            <div class="icon-tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2 6 4-12 2 6h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="mt-5 text-base font-semibold">Deploy-агент</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Разворачивает проект по описанию в чате: поднимает окружение, ставит зависимости,
+              настраивает домен и SSL без единой команды в терминале.
+            </p>
+          </div>
+          <div class="card fade-in">
+            <div class="icon-tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="mt-5 text-base font-semibold">Security-агент</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Непрерывно сканирует сервер на уязвимости и подозрительную активность, автоматически
+              накатывает критичные патчи на тарифах с обслуживанием.
+            </p>
+          </div>
+          <div class="card fade-in">
+            <div class="icon-tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17l6-6 4 4 7-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="mt-5 text-base font-semibold">Scale-агент</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Отслеживает нагрузку в реальном времени и сам предлагает (или применяет) изменение
+              конфигурации, чтобы не терять производительность и не платить за простой.
+            </p>
+          </div>
+          <div class="card fade-in">
+            <div class="icon-tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="mt-5 text-base font-semibold">Cost-агент</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Анализирует расход ресурсов, предупреждает о резких скачках счёта и подсказывает,
+              где можно уменьшить конфигурацию без потери скорости.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SSH / ACCESS LOGIC -->
+    <section class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px] grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div class="fade-in">
+          <div class="eyebrow">Уровни доступа</div>
+          <h2 class="section-title">SSH — не для всех по умолчанию, и это осознанно</h2>
+          <p class="section-sub">
+            На тарифе «Старт» сервером управляет AI-агент и панель: это снижает риск ошибок
+            конфигурации и держит порог входа низким для новых проектов. Прямой root-доступ
+            по SSH открывается начиная с тарифа «Рост» — вместе с управляемыми обновлениями,
+            бэкапами и security-агентом, которые страхуют ручные изменения.
+          </p>
+          <ul class="mt-6 flex flex-col gap-4 text-sm text-muted">
+            <li class="flex gap-3"><span class="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-ink"></span>Старт — только через бота и веб-консоль, безопасно для новичков.</li>
+            <li class="flex gap-3"><span class="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-ink"></span>Рост и Масштаб — полный root SSH плюс автоматические бэкапы перед рискованными операциями.</li>
+            <li class="flex gap-3"><span class="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-ink"></span>Корпоративный — доступ и политики настраиваются под регламенты вашей команды.</li>
+          </ul>
+        </div>
+        <div class="card fade-in bg-white/70">
+          <div class="flex items-center justify-between border-b border-black/5 pb-4">
+            <span class="text-sm font-semibold">Матрица доступа</span>
+            <span class="text-xs text-muted">по тарифам</span>
+          </div>
+          <div class="mt-4 flex flex-col divide-y divide-black/5 text-sm">
+            <div class="flex items-center justify-between py-3"><span>SSH root-доступ</span><span class="text-muted">Рост / Масштаб / Корп.</span></div>
+            <div class="flex items-center justify-between py-3"><span>Управление через бота и панель</span><span class="text-muted">все тарифы</span></div>
+            <div class="flex items-center justify-between py-3"><span>Автобэкап и снапшоты</span><span class="text-muted">Рост / Масштаб / Корп.</span></div>
+            <div class="flex items-center justify-between py-3"><span>Выделенный AI-агент</span><span class="text-muted">Масштаб / Корп.</span></div>
+            <div class="flex items-center justify-between py-3"><span>Персональный менеджер</span><span class="text-muted">Корп.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST -->
+    <section id="trust" class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px]">
+        <div class="fade-in max-w-2xl">
+          <div class="eyebrow">Надёжность</div>
+          <h2 class="section-title">Инфраструктура, на которую можно опереться</h2>
+          <p class="section-sub">
+            Резервирование, мониторинг и шифрование включены по умолчанию — а не продаются
+            отдельной опцией.
+          </p>
+        </div>
+
+        <div class="stat-row mt-12 fade-in">
+          <div class="card">
+            <div class="stat-value">99.95%</div>
+            <div class="stat-label">SLA на старшем тарифе</div>
+          </div>
+          <div class="card">
+            <div class="stat-value">&lt; 60 сек</div>
+            <div class="stat-label">среднее время деплоя</div>
+          </div>
+          <div class="card">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">мониторинг и поддержка</div>
+          </div>
+          <div class="card">
+            <div class="stat-value">AES-256</div>
+            <div class="stat-label">шифрование дисков и бэкапов</div>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <div class="card fade-in">
+            <h3 class="text-base font-semibold">Резервирование</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">Избыточные мощности и автоматическое восстановление сервиса при сбое узла.</p>
+          </div>
+          <div class="card fade-in">
+            <h3 class="text-base font-semibold">Прозрачный биллинг</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">Каждое списание видно в боте: за что, когда и сколько — без скрытых платежей.</p>
+          </div>
+          <div class="card fade-in">
+            <h3 class="text-base font-semibold">Контроль доступа</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">SSH-ключи, двухфакторное подтверждение действий и журнал всех операций агентов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section px-4 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px] grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div class="fade-in">
+          <div class="eyebrow">Вопросы</div>
+          <h2 class="section-title">Если коротко</h2>
+          <p class="section-sub">Не нашли ответ — спросите у бота прямо в чате, он отвечает мгновенно.</p>
+        </div>
+        <div class="fade-in">
+          <div class="faq-item">
+            <button class="faq-question"><span>Как списывается оплата?</span><span class="faq-plus">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Вы пополняете баланс в боте, а дальше система списывает средства поминутно за фактически использованные CPU, память, диск и трафик. Остановили сервер — списания за вычисления прекращаются.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question"><span>Почему SSH есть не на всех тарифах?</span><span class="faq-plus">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">На «Старте» мы берём риск ручных ошибок на себя: сервером управляет AI-агент и панель. Прямой root-доступ открывается с тарифа «Рост», где уже включены автобэкапы и security-агент, страхующие ваши изменения.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question"><span>Можно сменить тариф позже?</span><span class="faq-plus">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Да, переход между тарифами происходит в один клик в боте и не требует пересоздания серверов — агент переносит конфигурацию автоматически.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question"><span>Что входит в корпоративный тариф?</span><span class="faq-plus">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Индивидуальная архитектура, выделенные мощности, персональный менеджер и инженер, собственный SLA и договор с оплатой по счёту. Условия обсуждаются под задачи конкретной компании.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question"><span>Нужна ли карта для старта?</span><span class="faq-plus">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Нет — пополнить баланс можно прямо в Telegram несколькими способами, включая карты и криптовалюту. Минимальный депозит для старта — символический.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="px-4 pb-20 sm:px-6 md:px-10">
+      <div class="mx-auto max-w-[1200px]">
+        <div class="cta-band fade-in">
+          <div class="relative">
+            <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Поднимите первый сервер за минуту</h2>
+            <p class="mx-auto mt-3 max-w-xl text-white/70">Без установки клиентов и регистрации на отдельном сайте — всё начинается с одного сообщения боту.</p>
+            <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer" class="btn-primary mt-7 inline-flex bg-white text-ink hover:bg-white/90">
+              Открыть @orbit_cloud_bot
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="px-4 py-10 sm:px-6 md:px-10">
+    <div class="mx-auto flex max-w-[1200px] flex-col gap-6 border-t border-black/5 pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="logo-dot h-7 w-7 rounded-full"></span>
+        <span class="font-semibold text-ink">ORBIT</span>
+        <span class="text-muted">· облако с управлением из Telegram</span>
+      </div>
+      <div class="flex flex-wrap gap-5">
+        <a href="#pricing">Тарифы</a>
+        <a href="#agents">AI-агенты</a>
+        <a href="#faq">Вопросы</a>
+        <a href="https://t.me/orbit_cloud_bot" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </div>
+      <div>© 2026 ORBIT Cloud</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // header shadow on scroll
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // fade-in on view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach((item) => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    question.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      document.querySelectorAll('.faq-item.is-open').forEach((openItem) => {
+        if (openItem !== item) {
+          openItem.classList.remove('is-open');
+          openItem.querySelector('.faq-answer').style.maxHeight = null;
+        }
+      });
+      if (isOpen) {
+        item.classList.remove('is-open');
+        answer.style.maxHeight = null;
+      } else {
+        item.classList.add('is-open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
